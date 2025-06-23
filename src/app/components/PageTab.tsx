@@ -94,7 +94,7 @@ export const PageTab: React.FC<PageTabProps> = ({
     }
   };
 
-  const handlePointerUp = (_e: React.PointerEvent) => {
+  const handlePointerUp = () => {
     const clickDuration = Date.now() - pointerDownTime.current;
 
     // Only trigger click if it was a short press and didn't move much
