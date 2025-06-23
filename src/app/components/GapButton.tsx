@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { FormTypeDropdown } from "./FormTypeDropdown";
 
 interface GapButtonProps {
@@ -21,6 +22,23 @@ export const GapButton: React.FC<GapButtonProps> = ({
   onFormTypeSelect,
 }) => {
   const isVisible = isHovered || isDropdownOpen;
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [dropdownPos, setDropdownPos] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (isDropdownOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setDropdownPos({
+        left: rect.left + rect.width / 2,
+        top: rect.top, // position above the button
+      });
+    } else {
+      setDropdownPos(null);
+    }
+  }, [isDropdownOpen]);
 
   return (
     <div
@@ -40,25 +58,36 @@ export const GapButton: React.FC<GapButtonProps> = ({
         {isVisible && (
           <div className="relative animate-in fade-in duration-200">
             <button
+              ref={buttonRef}
               onClick={() => onToggleDropdown(index)}
               className="w-6 h-6 bg-white hover:bg-gray-100 text-black rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 shadow-lg hover:scale-110 border border-gray-300 cursor-pointer"
             >
               +
             </button>
 
-            {isDropdownOpen && (
-              <div
-                className="absolute bottom-full z-50 left-1/2 transform -translate-x-1/2 mb-1"
-                data-gap-dropdown
-                onClick={(e) => e.stopPropagation()}
-              >
-                <FormTypeDropdown
-                  onFormTypeSelect={(formType) =>
-                    onFormTypeSelect(formType, index + 1)
-                  }
-                />
-              </div>
-            )}
+            {isDropdownOpen &&
+              dropdownPos &&
+              ReactDOM.createPortal(
+                <div
+                  className="z-50"
+                  data-gap-dropdown
+                  style={{
+                    position: "fixed",
+                    left: dropdownPos.left,
+                    top: dropdownPos.top,
+                    transform: "translate(-50%, -100%)",
+                    marginBottom: "0.25rem", // mb-1
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <FormTypeDropdown
+                    onFormTypeSelect={(formType) =>
+                      onFormTypeSelect(formType, index + 1)
+                    }
+                  />
+                </div>,
+                document.body
+              )}
           </div>
         )}
       </div>

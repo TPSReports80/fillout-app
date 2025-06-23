@@ -16,6 +16,7 @@ import {
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { restrictToFirstScrollableAncestor } from "@dnd-kit/modifiers";
 import { PageTab } from "./PageTab";
 import { ContextMenu } from "./ContextMenu";
 import { NameModal } from "./NameModal";
@@ -216,13 +217,14 @@ export const PageNavigation: React.FC<PageNavigationProps> = ({
                 sensors={sensors}
                 collisionDetection={closestCenter}
                 onDragEnd={handleDragEnd}
+                modifiers={[restrictToFirstScrollableAncestor]}
               >
                 <SortableContext
                   items={pages}
                   strategy={horizontalListSortingStrategy}
                   key={pages.length + pages.map((p) => p.id).join("-")}
                 >
-                  <div className="flex flex-wrap gap-1 sm:gap-2 transition-all duration-300 ease-out">
+                  <div className="relative flex flex-nowrap gap-1 sm:gap-2 transition-all duration-300 ease-out overflow-x-auto w-full scrollbar-hide">
                     {pages.map((page, index) => (
                       <React.Fragment key={page.id}>
                         <div className="relative transition-all duration-300 ease-out">
