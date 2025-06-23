@@ -11,7 +11,7 @@ export const FormTypeDropdown: React.FC<FormTypeDropdownProps> = ({
   className = "",
 }) => (
   <div
-    className={`bg-white shadow-lg pb-4 min-w-[220px] z-50 transition-all duration-200 ease-out opacity-100 translate-y-0 relative ${className}`}
+    className={`bg-white shadow-lg pb-6 min-w-[250px] z-50 transition-all duration-200 ease-out opacity-100 translate-y-0 relative ${className}`}
     style={{
       animation: "dropdownSlideIn 0.2s ease-out",
     }}
