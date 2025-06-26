@@ -28,7 +28,7 @@ export default function Home() {
             />
             <div className="w-[1.2px] h-[20px] bg-gray-400 hidden sm:block"></div>
             <h1 className="font-bold text-lg sm:text-xl text-gray-500">
-              Form Builder
+              Form Builder | Mike Joo
             </h1>
           </div>
           <p className="text-gray-500 text-sm sm:text-base mt-2 sm:mt-0 sm:ml-auto   ">
